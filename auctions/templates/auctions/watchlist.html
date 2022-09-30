@@ -1,0 +1,93 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    Watchlist
+{% endblock %}
+
+{% block body %}
+
+    {% if message %}
+        <div class="notification is-primary is-light msg">
+            <button class="delete"></button>
+            {{ message }}
+        </div>
+    {% endif %}
+
+    <div class="container head">
+        <h2 class="title">Your watchlist</h2>
+    </div>   
+    <div class="container createcont">
+        <div class="columns is-multiline is-centered is-mobile">
+
+    {% for item in watchlist %}
+        {% if item.item.status == 'Opened' %}
+            <div class="column is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
+                <div class="card">
+                    <div class="card-image pictcol">
+                        <div class="cardpic">
+                            <p><a href="{% url 'card' item.item.id %}"><img style="width: 200px;" src="{{ item.item.url }}" alt="Placeholder image"></a></p>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-4">{{ item.item.name }}</p>
+                            </div>
+                            {% if item.item.id in numbers %}
+                                {% for bid in bids %}
+                                    {% if bid.item == item.item.id %}
+                                    <div class="media-right">
+                                        <p class="title is-4">${{ bid.bid }}</p>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <div class="media-right">
+                                    <p class="title is-4">${{ item.item.start_bid }}</p>
+                                </div>
+                            {% endif %}
+                            <!-- <div class="media-right">
+                                <p class="title is-4">${{item.item.start_bid}} </p>
+                            </div> -->
+                        </div>
+                        <div class="content inddesc">{{ item.item.text }}</div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+        </div>
+    </div>
+    <div class="container head">
+        <h2 class="title">Archive</h2>
+    </div>   
+    <div class="container createcont">
+        <div class="columns is-multiline is-centered is-mobile">
+
+    {% for item in watchlist %}
+        {% if item.item.status == 'Closed' %}
+            <div class="column is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
+                <div class="card">
+                    <div class="card-image pictcol">
+                        <div class="cardpic">
+                            <p><a href="{% url 'card' item.item.id %}"><img style="width: 200px;" src="{{ item.item.url }}" alt="Placeholder image"></a></p>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-content">
+                                <p class="title is-4">{{ item.item.name }}</p>
+                            </div>
+                            <!-- <div class="media-right">
+                                <p class="title is-4">${{item.item.start_bid}} </p>
+                            </div> -->
+                        </div>
+                        <div class="content inddesc">{{ item.item.text }}</div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

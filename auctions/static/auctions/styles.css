@@ -1,0 +1,125 @@
+@media (max-width: 768px), print {
+.b1 {
+    width: 90vw;
+    display: flex;
+    justify-content: space-between;
+}
+.input.is-medium.bid {
+    min-width: 70vw;
+    margin-right: 2vw;
+}
+.button.is-primary.is-medium.createbut{
+    min-width: 20vw;
+}}
+
+.cont {
+    max-width: 30vw;
+    text-align: center;
+    margin-left: 35vw;
+    margin-top: 20vh;
+}
+
+.n1 {
+    display: flex;
+    flex-direction: row;
+}
+
+.n2 {
+    margin-left: 4rem;
+}
+
+.createcont {
+    min-height: 80vh;
+    margin-top: 4vh;
+}
+
+.desc {
+    margin-top: 10vh;
+}
+
+.bid {
+    max-width: 20vw;
+}
+
+.msg {
+    text-align: center;
+}
+
+.inddesc {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 4.5rem;
+}
+
+.head {
+    margin-top: 3vw;
+    margin-bottom: 3vw;
+    text-align: center;
+}
+
+.pictcol {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.textdiv {
+    margin-top: 5vh;
+}
+
+img {
+    border-radius: 6px;
+}
+
+.desctxt {
+    font-size: 18px;
+}
+
+.s1 {
+    min-height: 85vh;   
+}
+
+.cardpic {
+    margin: 5px;
+}
+
+.card .card-image {
+    height: 300px;
+}
+
+.bids {
+    display: flex;
+    margin-top: 3vh;
+
+}
+
+.textdiv .desctxt {
+    min-height: 35vh;
+}
+
+
+.watch {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.l1 {
+    align-items: flex-end;
+}
+
+.md {
+    min-height: 2rem;
+    max-height: 2rem;
+}
+
+.com {
+    justify-content: flex-end;
+}
+
+.text {
+    margin-top: 5vh;
+}

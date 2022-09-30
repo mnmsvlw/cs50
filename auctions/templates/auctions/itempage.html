@@ -1,0 +1,158 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    {{ items.name }}
+{% endblock %}
+
+{% block body %}
+<div>
+    <div class="container">
+        <div class="box createcont">
+            <div class="columns is-desktop s1">
+                <div class="column pictcol">
+                    <div class="pict"> 
+                        <img style="width: 500px;" src="{{ items.url }}" alt="Item Image">
+                    </div>
+                </div>
+            
+                <div class="column">
+                    <div class="textdiv">
+                        <h2 class="title is-1">{{ items.name }}</h2>
+                    </div>
+                    <div class="textdiv">
+                        <h2 class="title is-6">Listed by {{ items.owner }}</h2>
+                        <h2 class="title is-6">Category: {{ items.category }}</h2>
+                    </div>
+                    <div class="textdiv">
+                        <h3 class="desctxt">{{ items.text }}</h2>
+                    </div>
+                    {% if count and items.status == "Opened" %}
+                        <div class="textdiv">
+                            There is currently {{count}} bid(s).
+                        {% if bids.username.id == request.user.id %}
+                            Your bid is the biggest!
+                        {% endif %}
+                        </div>
+                    {% endif %}
+                    
+                    {% if items.status == "Opened" %}
+
+                    <div class="level l1">
+                        <div class="level-left">
+                            <div class="textdiv">
+                                {% if bids.bid %}
+                                    <h2 class="title is-4">Current bid: ${{ bids.bid }}</h2>
+                                {% else %}
+                                    <h2 class="title is-4">Minimum bid is ${{ items.start_bid }}</h2>
+                                {% endif %}
+                            </div>
+                        </div>
+                    
+                        {% if user.is_authenticated %}
+                        
+                            {% if items.owner.id != user.id %}
+
+                            <div class="level-right b1">
+                                <form class="level-item" action="{% url 'card' items.id %}" method="post">
+                                    {% csrf_token %}
+                                        <input hidden name="id" value="{{ items.id }}">
+                                    {% if bids.bid %}
+                                        <input class="input is-medium bid" type="number" name="bid" placeholder="Paste the amount" min="{{ bids.bid|add:1 }}" step="any" required>
+                                    {% else %}
+                                        <input class="input is-medium bid" type="number" name="bid" placeholder="Paste the amount" min="{{ items.start_bid }}" step="any" required>
+                                    {% endif %}
+                                    <input class="button is-primary is-medium createbut" type="submit" value="Bid">
+                                </form>
+                            </div>
+                            </div>
+
+                            <div class="">
+                                <form action="{% url 'card' items.id %}" method="post">
+                                    {% csrf_token %}
+                                    {% if not watchlist %}
+                                        <input hidden name="watch" value="{{ items.id }}">
+                                        <input class="button is-link is-medium is-fullwidth" type="submit" value="Add to watchlist">
+                                    {% else %}
+                                        <input hidden name="unwatch" value="{{ items.id }}">
+                                        <input class="button is-danger is-medium is-fullwidth" type="submit" value="Remove from watchlist">
+                                    {% endif %}
+                                </form>
+                            </div>
+                            
+                            {% else %}
+                            </div>
+                            <div>
+                                <form action="{% url 'card' items.id %}", method="post">
+                                    {% csrf_token %}
+                                    <input hidden name="close" value="{{ items.id }}">
+                                    <input class="button is-danger is-medium is-fullwidth" type="submit" value="Close listing">
+                                </form>
+                            </div>
+
+                            {% endif %}
+                            
+                            {% else %}
+                        </div>
+                        {% endif %}
+
+                    {% else %}
+                    <div class="level l1">
+                        <div class="level-left">
+                            <div class="textdiv">
+                                {% if not bids.bid %}
+                                    <h2 class="title is-4">There were no bids. Listing closed.</h2>
+                                {% elif bids.username.id != request.user.id %}
+                                <h2 class="title is-4">Item was sold for ${{ bids.bid }} to {{ bids.username }}</h2>
+                                {% else %}
+                                    <h2 class="title is-4">Gratz! Item was sold to you for ${{ bids.bid }}!</h2>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div> 
+            </div>
+        </div>
+        <div class="box">
+            {% if not comments %}
+                <h2 class="title is-4">There is no comments yet. You can be the first!</h2>
+            {% else %}
+                <h2 class="title is-4">Comments</h2>
+                {% for comment in comments%}
+                <article class="media">
+                    <div class="media-content">
+                        <div class="content">
+                          <p>
+                            <strong>{{ comment.username }}</strong> <small>{{ comment.time }}</small>
+                            <br>    
+                            {{ comment.comment }}
+                          </p>
+                        </div>
+                    </div>
+                    {% if comment.username.id == request.user.id %}
+                    <div class="media-right">
+                        <form action="{% url 'card' items.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="delete" name="remcom" value="{{comment.id}}"></button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </article>
+                {% endfor %}
+            {% endif %}
+            <form action="{% url 'card' items.id %}" method="post">
+                {% csrf_token %}
+                <div class="field text">
+                    <textarea class="textarea" type="text" name="comment" rows="4" placeholder="Leave your comment here" required></textarea>
+                </div>
+                <div class="level com">
+                    <div class="level-right">
+                        <input hidden name="itemidcom" value="{{items.id}}">
+                        <input class="button is-info is-medium createbut" type="submit" value="Comment">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

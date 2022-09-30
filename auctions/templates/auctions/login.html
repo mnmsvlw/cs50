@@ -1,0 +1,30 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% if message %}
+    <div class="notification is-danger is-light msg">
+        <button class="delete"></button>
+        {{ message }}
+    </div>
+    {% endif %}
+
+    <div class="cont">
+        <form class="box" action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            <div class="field">
+                <h2>Login</h2>
+            </div>
+            <div class="field">
+                <input autofocus class="input" type="text" name="username" placeholder="Username">
+            </div>
+            <div class="field">
+                <input class="input" type="password" name="password" placeholder="Password">
+            </div>
+            <input class="button is-primary" type="submit" value="Login">
+            <div class="field">
+                Don't have an account? <a href="{% url 'register' %}">Register here.</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

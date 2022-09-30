@@ -1,0 +1,53 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    {% if message %}
+    <div class="notification is-primary is-light msg">
+        <button class="delete"></button>
+        {{ message }}
+    </div>
+    {% endif %}
+    <div class="container head">
+        <h2 class="title">Active Listings</h2>
+    </div>   
+    <div class="container createcont">
+        <div class="columns is-multiline is-centered is-mobile">
+
+            {% for item in items %}
+            <div class="column is-three-quarters-mobile is-two-thirds-tablet is-half-desktop is-one-third-widescreen is-one-quarter-fullhd">
+                <div class="card">
+                    <div class="card-image pictcol">
+                        <!-- <figure class="image is-4by3"> -->
+                        <div class="cardpic">
+                            <p><a href="{% url 'card' item.id %}"><img style="width: 200px;" src="{{ item.url }}" alt="Placeholder image"></a></p>
+                        </div>
+                        <!-- </figure> -->
+                    </div>
+                    <div class="card-content">
+                        <div class="media md">
+                            <div class="media-content">
+                                <p class="title is-4">{{ item.name }}</p>
+                            </div>
+                            {% if item.id in numbers %}
+                                {% for bid in bids %}
+                                    {% if bid.item == item.id %}
+                                    <div class="media-right">
+                                        <p class="title is-4">${{ bid.bid }}</p>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <div class="media-right">
+                                    <p class="title is-4">${{ item.start_bid }}</p>
+                                </div>
+                            {% endif %}
+
+                        </div>
+                        <div class="content inddesc">{{ item.text }}</div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

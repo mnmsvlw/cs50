@@ -1,0 +1,4 @@
+auctions/__pycache__
+commerce/__pycache__
+auctions/migrations
+db.sqlite3
