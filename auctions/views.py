@@ -96,16 +96,21 @@ def create(request):
         item.owner = User.objects.get(id=request.user.id)
         item.save()
 
-        # listing = Listing()
-        # listing.username = User.objects.get(id=request.user.id)
-        # listing.item = Item.objects.get(id=item.id)
-        # # listing.username = User.objects.get(id=request.user.id)
-        # # listing.item = Item.objects.get(name=request.POST['title'])
-        # listing.save()
-        items = Item.objects.all()
+        items = Item.objects.filter(status='Opened').order_by('-id')
+        full = []
+        numbers = []
+        for item in items:
+            if Bid.objects.filter(item = item).exists():
+                bids = {}
+                bids["item"] = item.id
+                bids["bid"] = Bid.objects.filter(item = item).order_by('-bid')[0].bid
+                full.append(bids)
+                numbers.append(item.id)
         return render(request, "auctions/index.html", {
             "items": items,
-            "message": "Your item was successfully listed!"
+            "message": "Your item was successfully listed!",
+            "bids": full,
+            "numbers" : numbers
         })
         
     else:
@@ -210,9 +215,21 @@ def categories(request):
 def cat(request, category):
 
     category = Categorie.objects.get(name=category)
-    items = Item.objects.filter(category=category.id)
+    if Item.objects.filter(status='Opened').exists():
+        items = Item.objects.filter(status='Opened', category=category).order_by('-id')
+        full = []
+        numbers = []
+        for item in items:
+            if Bid.objects.filter(item = item).exists():
+                bids = {}
+                bids["item"] = item.id
+                bids["bid"] = Bid.objects.filter(item = item).order_by('-bid')[0].bid
+                full.append(bids)
+                numbers.append(item.id)
 
     return render(request, 'auctions/category.html', {
         "items": items,
-        "category": category
+        "category": category,
+        "bids": full,
+        "numbers" : numbers
     })

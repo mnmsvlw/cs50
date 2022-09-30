@@ -20,9 +20,19 @@
                             <div class="media-content">
                                 <p class="title is-4">{{ item.name }}</p>
                             </div>
-                            <div class="media-right">
-                                <p class="title is-4">${{item.start_bid}} </p>
-                            </div>
+                            {% if item.id in numbers %}
+                                {% for bid in bids %}
+                                    {% if bid.item == item.id %}
+                                    <div class="media-right">
+                                        <p class="title is-4">${{ bid.bid }}</p>
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <div class="media-right">
+                                    <p class="title is-4">${{ item.start_bid }}</p>
+                                </div>
+                            {% endif %}
                         </div>
                         <div class="content inddesc">{{ item.text }}</div>
                     </div>
