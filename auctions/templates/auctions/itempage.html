@@ -140,6 +140,7 @@
                 </article>
                 {% endfor %}
             {% endif %}
+            {% if user.is_authenticated %}
             <form action="{% url 'card' items.id %}" method="post">
                 {% csrf_token %}
                 <div class="field text">
@@ -152,6 +153,7 @@
                     </div>
                 </div>
             </form>
+            {% endif %}
         </div>
     </div>
 </div>
